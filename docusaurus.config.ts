@@ -1,5 +1,6 @@
 import {themes as prismThemes} from "prism-react-renderer"
 import type * as Preset from "@docusaurus/preset-classic"
+import prismTheme from "./src/theme/CodeBlock/theme"
 
 const title = "Tailcall"
 const organization = "tailcallhq"
@@ -54,7 +55,7 @@ export default {
   presets: [
     [
       "classic",
-      /** @type {import('@docusaurus/preset-classic').Options} */
+      /** @type {import("@docusaurus/preset-classic").Options} */
       {
         gtag: {
           trackingID: "G-JEP3QDWT0G",
@@ -76,7 +77,7 @@ export default {
         sitemap: {
           changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ["/blog/**"],
+          ignorePatterns: ["/blogs/**"],
         },
       },
     ],
@@ -84,7 +85,7 @@ export default {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "icons/companies/taicall.svg",
+    image: "/images/tc-og-2.png",
     navbar: {
       hideOnScroll: true,
       logo: {
@@ -97,8 +98,8 @@ export default {
         // {to: "/about", label: "About", position: "left"},
         // {to: "/enterprise", label: "Enterprise", position: "left"},
         {to: "/docs", label: "Docs", position: "left"},
-        {to: "/graphql", label: "GraphQL", position: "left"},
-        {to: "https://blog.tailcall.run/", label: "Blog", position: "left"},
+        {to: "/graphql", label: "Learn", position: "left"},
+        {to: "/blog", label: "Blog", position: "left"},
         {
           href: "https://discord.gg/kRZBPpkgwq",
           position: "right",
@@ -111,8 +112,9 @@ export default {
       ],
     },
     prism: {
-      theme: prismThemes.oneLight,
+      theme: prismTheme,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ["protobuf", "json", "diff"],
     },
     colorMode: {
       disableSwitch: true,
@@ -189,6 +191,34 @@ export default {
         ],
       },
     ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        path: "blog",
+        editLocalizedFiles: false,
+        blogTitle: "Feed of Tailcall blogs",
+        blogDescription: "List of blog posts on Tailcall blog",
+        blogSidebarCount: 10,
+        blogSidebarTitle: "Recent Blog Posts",
+        routeBasePath: "blog",
+        include: ["**/*.{md,mdx}"],
+        exclude: ["**/_*.{js,jsx,ts,tsx,md,mdx}", "**/_*/**", "**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**"],
+        postsPerPage: 10,
+        blogListComponent: "@theme/BlogListPage",
+        blogPostComponent: "@theme/BlogPostPage",
+        blogTagsListComponent: "@theme/BlogTagsListPage",
+        blogTagsPostsComponent: "@theme/BlogTagsPostsPage",
+        rehypePlugins: [],
+        beforeDefaultRemarkPlugins: [],
+        beforeDefaultRehypePlugins: [],
+        truncateMarker: /<!--\s*(truncate)\s*-->/,
+        showReadingTime: true,
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Tailcall, Inc.`,
+        },
+      },
+    ],
 
     [
       "@docusaurus/plugin-content-docs",
@@ -206,6 +236,16 @@ export default {
         highlightResult: true,
       },
     ],
+    // [
+    //   "@docusaurus/plugin-ideal-image",
+    //   {
+    //     // quality: 70,
+    //     // max: 1030, // max resized image's size.
+    //     // min: 640, // min resized image's size. if original is lower, use that size.
+    //     // steps: 2, // the max number of images generated between min and max (inclusive)
+    //     disableInDev: false,
+    //   },
+    // ], causing problem in layouts and image loads
     async function myPlugin() {
       return {
         name: "docusaurus-tailwindcss",
